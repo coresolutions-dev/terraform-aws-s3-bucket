@@ -1,4 +1,4 @@
-![alt text](https://coresolutions.ltd/media/core-solutions-82.png "Core Solutions")
+[![alt text](https://coresolutions.ltd/media/core-solutions-82.png "Core Solutions")](https://coresolutions.ltd)
 
 [![maintained by Core Solutions](https://img.shields.io/badge/maintained%20by-coresolutions.ltd-00607c.svg)](https://coresolutions.ltd)
 [![GitHub tag](https://img.shields.io/github/v/tag/coresolutions-ltd/terraform-aws-s3-bucket.svg?label=latest)](https://github.com/coresolutions-ltd/terraform-aws-s3-bucket/releases)
@@ -32,6 +32,7 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | acl         | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply | string      | private | No       |
 | versioning  | Boolean to enable versioning                                                                        | bool        | false   | No       |
 | encryption  | Boolean to enable encryption                                                                        | bool        | true    | No       |
+| kms_key     | ARN of the KMS key to use, if omitted and **encryption** is set to true SSE-S3 is used.             | string      | None    | No       |    
 | tags        | Map of tags to apply                                                                                | map(string) | None    | No       |
 
 

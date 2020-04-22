@@ -24,6 +24,12 @@ variable "encryption" {
     default = true
 }
 
+variable "kms_key" {
+    description = "ARN of the KMS key to use, if omitted and encryption is set to true SSE-S3 is used."
+    type    = string
+    default = ""
+}
+
 variable "tags" {
     type = map(string)
     default = null
