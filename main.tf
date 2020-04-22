@@ -1,5 +1,7 @@
 resource "aws_s3_bucket" "bucket" {
-    bucket = var.bucket_name
+    # bucket = var.bucket_name
+    bucket_prefix = var.prefix ? var.bucket_name : null
+    bucket        = var.prefix ? null : var.bucket_name
     acl    = var.acl
     tags   = var.tags
 
@@ -7,8 +9,8 @@ resource "aws_s3_bucket" "bucket" {
         enabled = var.versioning
     }
 
-    dynamic "server_side_encryption_configuraton" {
-        for_each = tobool(var.encryption) ? [ var.encryption ] : []
+    dynamic "server_side_encryption_configuration" {
+        for_each = var.encryption ? [ var.encryption ] : []
 
         content {
             rule {
