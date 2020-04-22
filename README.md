@@ -7,15 +7,19 @@
 
 # Core S3 Bucket Terraform Module
 
-Terraform module which creates an S3 bucket whilst extrapulating as much complexity as possible.
+Terraform module which creates an S3 bucket whilst extrapolating as much complexity as possible.
 
 ## Getting Started
 
 ```sh
-asdsadsadadsasdasd
+module "basic" {
+    source = "../"
+    bucket_name = "bucket-name"
+    prefix = true
+}
 ```
 
-More examples can be found [here](https://github.com/coresolutions-ltd/terraform-aws-s3-bucket/examples).
+More examples can be found [here](https://github.com/coresolutions-ltd/terraform-aws-s3-bucket/tree/master/examples).
 
 
 ## Inputs
