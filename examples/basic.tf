@@ -1,5 +1,5 @@
 module "basic" {
-    source = "../"
+    source      = "../"
     bucket_name = "bucket-name"
-    prefix = true
+    prefix      = true
 }
