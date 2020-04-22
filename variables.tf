@@ -1,17 +1,17 @@
 variable "bucket_name" {
-    type = string
+    type    = string
     default = null
 }
 
 variable "prefix" {
-    type = bool
+    type    = bool
     default = false
 }
 
 variable "acl" {
     description = "Canned ACL to apply: https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl"
-    type    = string
-    default = "private"
+    type        = string
+    default     = "private"
 }
 
 variable "versioning" {
@@ -26,11 +26,11 @@ variable "encryption" {
 
 variable "kms_key" {
     description = "ARN of the KMS key to use, if omitted and encryption is set to true SSE-S3 is used."
-    type    = string
-    default = ""
+    type        = string
+    default     = ""
 }
 
 variable "tags" {
-    type = map(string)
+    type    = map(string)
     default = null
 }

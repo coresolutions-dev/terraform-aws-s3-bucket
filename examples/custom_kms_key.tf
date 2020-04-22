@@ -4,8 +4,8 @@ resource "aws_kms_key" "mykey" {
 }
 
 module "custom_kms_key" {
-    source = "../"
+    source      = "../"
     bucket_name = "custom-kms-bucket"
-    encryption = true
-    kms_key    = aws_kms_key.mykey.arn
+    encryption  = true
+    kms_key     = aws_kms_key.mykey.arn
 }
