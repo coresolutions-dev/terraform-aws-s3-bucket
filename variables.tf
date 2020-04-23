@@ -19,6 +19,11 @@ variable "versioning" {
     default = false
 }
 
+variable "mfa_delete" {
+    type = bool
+    default = null
+}
+
 variable "encryption" {
     type    = bool
     default = true
@@ -32,5 +37,15 @@ variable "kms_key" {
 
 variable "tags" {
     type    = map(string)
+    default = null
+}
+
+variable "logging_target_bucket" {
+    type = string
+    default = null
+}
+
+variable "logging_target_prefix" {
+    type = string
     default = null
 }

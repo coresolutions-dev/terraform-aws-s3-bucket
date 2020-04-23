@@ -5,7 +5,8 @@ resource "aws_s3_bucket" "bucket" {
     tags          = var.tags
 
     versioning {
-        enabled = var.versioning
+        enabled    = var.versioning
+        mfa_delete = var.mfa_delete
     }
 
     dynamic "server_side_encryption_configuration" {
@@ -20,4 +21,16 @@ resource "aws_s3_bucket" "bucket" {
             }
         }
     }
+
+    dynamic "logging" {
+        for_each = var.logging_target_bucket != null ? [ var.logging_target_bucket ] : []
+        iterator = target_bucket
+
+        content {
+            target_bucket = target_bucket.value
+            target_prefix = var.logging_target_prefix  
+        }
+  }
+
+
 } 

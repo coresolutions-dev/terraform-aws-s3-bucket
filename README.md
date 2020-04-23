@@ -25,20 +25,23 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 ## Inputs
 
 
-|     Name    |                                               Description                                           |    Type     | Default | Required |
-| ----------- | --------------------------------------------------------------------------------------------------- | ----------- | --------| ---------|
-| bucket_name | Name for the bucket, if omitted, Terraform will assign a random unique name.                        | string      | None    | No       |
-| prefix      | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
-| acl         | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply | string      | private | No       |
-| versioning  | Boolean to enable versioning                                                                        | bool        | false   | No       |
-| encryption  | Boolean to enable encryption                                                                        | bool        | true    | No       |
-| kms_key     | ARN of the KMS key to use, if omitted and **encryption** is set to true SSE-S3 is used.             | string      | None    | No       |    
-| tags        | Map of tags to apply                                                                                | map(string) | None    | No       |
+|          Name         |                                            Description                                              |    Type     | Default | Required |
+| --------------------- | --------------------------------------------------------------------------------------------------- | ----------- | --------| ---------|
+| bucket_name           | Name for the bucket, if omitted, Terraform will assign a random unique name.                        | string      | None    | No       |
+| prefix                | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
+| acl                   | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply | string      | private | No       |
+| versioning            | Boolean to enable versioning                                                                        | bool        | false   | No       |
+| mfa_delete            | Boolean to enable MFA Delete on versioned bucket                                                    | bool        | false   | No       |
+| encryption            | Boolean to enable encryption                                                                        | bool        | true    | No       |
+| kms_key               | ARN of the KMS key to use, if omitted and **encryption** is set to true SSE-S3 is used.             | string      | None    | No       |
+| logging_target_bucket | The name of the bucket that will receive the log objects                                            | string      | None    | No       |
+| logging_target_prefix | key prefix for log objects.                                                                         | string      | None    | No       |   
+| tags                  | Map of tags to apply                                                                                | map(string) | None    | No       |
 
 
 ## Outputs
 
-|         Name                   |           Description           |
+|             Name               |           Description           |
 | ------------------------------ | ------------------------------- |
 | s3_bucket_arn                  | Bucket ARN                      |
 | s3_bucket_id                   | Bucket ID/Name                  |
