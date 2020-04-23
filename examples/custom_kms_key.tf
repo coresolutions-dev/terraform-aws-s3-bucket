@@ -3,7 +3,7 @@ resource "aws_kms_key" "mykey" {
   deletion_window_in_days = 10
 }
 
-module "custom_kms_key" {
+module "custom_kms_key_example" {
     source      = "../"
     bucket_name = "custom-kms-bucket"
     encryption  = true
