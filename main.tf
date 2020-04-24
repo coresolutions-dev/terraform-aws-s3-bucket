@@ -4,6 +4,7 @@ resource "aws_s3_bucket" "bucket" {
     acl           = var.acl
     tags          = var.tags
     policy        = var.policy
+    force_destroy = var.force_destroy
 
     versioning {
         enabled    = var.versioning
