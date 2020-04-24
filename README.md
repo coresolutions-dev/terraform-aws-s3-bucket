@@ -31,8 +31,9 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | prefix                 | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
 | acl                    | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply **(Conflicts with grant)**  | string      | private | No       |
 | grants                 | A list of [ACL Policy grants ](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl) to apply **(Conflicts with acl)** | list(map)      | None | No       |
-| policy                 | The bucket policy in JSON                                                                           | string      | None    | No       |
+| policy                 | The bucket policy in JSON                                                                           | string      | None     | No       |
 | region                 | The AWS region this bucket should reside in, if omitted the region of the callee is used            | string      | None     | No      |
+| request_payer          | Who pays the cost of Amazon S3 data transfer. Can be either `BucketOwner` or `Requester`            | string      | BucketOwner | No    |
 | force_destroy          | A boolean that indicates all objects (including any locked objects) should be deleted from the bucket so that the bucket can be destroyed without error | bool      | false    | No       |
 | acceleration_status    | Used to enable or suspend [Transfer Acceleration](https://docs.aws.amazon.com/AmazonS3/latest/dev/transfer-acceleration.html). Value can be `Enabled` or `Suspended`            | string      | None    | No       |
 | versioning             | Boolean to enable versioning                                                                        | bool        | false   | No       |
@@ -49,12 +50,12 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 
 
 ### Maps in the grants list supports the following, all must be of type `string`:
-| Key | Value | Required |
-| ----|------| --------- |
-| type | Type of grantee to apply for, valid values are `CanonicalUser` and `Group` AmazonCustomerByEmail is not supported | Yes |
-| permissions | permissions to apply for grantee. Valid values are `READ` `WRITE` `READ_ACP` `WRITE_ACP` `FULL_CONTROL` | Yes |
-| id  | Canonical user id to grant for, used only when type is CanonicalUser | No |
-| uri | Uri address to grant for. Used only when type is Group | No |
+| Key         |                                                      Value                                                        | Required  |
+| ----------- |------------------------------------------------------------------------------------------------------------------ | --------- |
+| type        | Type of grantee to apply for, valid values are `CanonicalUser` and `Group` AmazonCustomerByEmail is not supported | Yes       |
+| permissions | permissions to apply for grantee. Valid values are `READ` `WRITE` `READ_ACP` `WRITE_ACP` `FULL_CONTROL`           | Yes       |
+| id          | Canonical user id to grant for, used only when type is CanonicalUser                                              | No        |
+| uri         | Uri address to grant for. Used only when type is Group                                                            | No        |
 
 
 ## Outputs

@@ -32,6 +32,12 @@ variable "region" {
   default     = null
 }
 
+variable "request_payer" {
+  description = "Who pays the cost of Amazon S3 data transfer. Can be either BucketOwner or Requester"
+  type        = string
+  default     = null
+}
+
 variable "versioning" {
     type    = bool
     default = false

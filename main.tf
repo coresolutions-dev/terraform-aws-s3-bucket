@@ -7,6 +7,7 @@ resource "aws_s3_bucket" "bucket" {
     force_destroy       = var.force_destroy
     acceleration_status = var.acceleration_status 
     region              = var.region
+    request_payer       = var.request_payer 
 
     versioning {
         enabled    = var.versioning
