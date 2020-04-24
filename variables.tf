@@ -49,3 +49,9 @@ variable "logging_target_prefix" {
     type = string
     default = null
 }
+
+variable "policy" {
+  description = "The bucket policy in JSON."
+  type        = string
+  default     = null
+}

@@ -3,6 +3,7 @@ resource "aws_s3_bucket" "bucket" {
     bucket        = var.prefix ? null : var.bucket_name
     acl           = var.acl
     tags          = var.tags
+    policy        = var.policy
 
     versioning {
         enabled    = var.versioning
@@ -30,7 +31,5 @@ resource "aws_s3_bucket" "bucket" {
             target_bucket = target_bucket.value
             target_prefix = var.logging_target_prefix  
         }
-  }
-
-
+    }    
 } 

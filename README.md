@@ -35,7 +35,8 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | encryption            | Boolean to enable encryption                                                                        | bool        | true    | No       |
 | kms_key               | ARN of the KMS key to use, if omitted and **encryption** is set to true SSE-S3 is used.             | string      | None    | No       |
 | logging_target_bucket | The name of the bucket that will receive the log objects                                            | string      | None    | No       |
-| logging_target_prefix | key prefix for log objects.                                                                         | string      | None    | No       |   
+| logging_target_prefix | key prefix for log objects.                                                                         | string      | None    | No       |
+| policy                | The bucket policy in JSON.                                                                          | string      | None    | No       |
 | tags                  | Map of tags to apply                                                                                | map(string) | None    | No       |
 
 
