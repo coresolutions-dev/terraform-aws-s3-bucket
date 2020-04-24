@@ -42,6 +42,12 @@ variable "force_destroy" {
     default = false
 }
 
+variable "acceleration_status" {
+    description = "Used to Enable or Suspend Transfer Acceleration: https://docs.aws.amazon.com/AmazonS3/latest/dev/transfer-acceleration.html"
+    type = string
+    default = null
+}
+
 variable "encryption" {
     type    = bool
     default = true

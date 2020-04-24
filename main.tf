@@ -1,10 +1,11 @@
 resource "aws_s3_bucket" "bucket" {
-    bucket_prefix = var.prefix ? var.bucket_name : null
-    bucket        = var.prefix ? null : var.bucket_name
-    acl           = var.acl
-    tags          = var.tags
-    policy        = var.policy
-    force_destroy = var.force_destroy
+    bucket_prefix       = var.prefix ? var.bucket_name : null
+    bucket              = var.prefix ? null : var.bucket_name
+    acl                 = var.acl
+    tags                = var.tags
+    policy              = var.policy
+    force_destroy       = var.force_destroy
+    acceleration_status = var.acceleration_status 
 
     versioning {
         enabled    = var.versioning
