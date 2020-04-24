@@ -6,11 +6,11 @@ module "grants_example" {
   grants = [{
     id          = data.aws_canonical_user_id.current_user.id
     type        = "CanonicalUser"
-    permissions = "FULL_CONTROL"
+    permissions = ["FULL_CONTROL"]
   },
   {
     type        = "Group"
-    permissions = "READ, WRITE"
+    permissions = ["READ", "WRITE"]
     uri         = "http://acs.amazonaws.com/groups/s3/LogDelivery"
   }]
 }
