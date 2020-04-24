@@ -26,6 +26,12 @@ variable "policy" {
   default     = null
 }
 
+variable "region" {
+  description = "The AWS region this bucket should reside in, if omitted the region by the callee is used"
+  type        = string
+  default     = null
+}
+
 variable "versioning" {
     type    = bool
     default = false
