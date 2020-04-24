@@ -14,6 +14,12 @@ variable "acl" {
     default     = "private"
 }
 
+variable "policy" {
+  description = "The bucket policy in JSON."
+  type        = string
+  default     = null
+}
+
 variable "versioning" {
     type    = bool
     default = false
@@ -50,8 +56,26 @@ variable "logging_target_prefix" {
     default = null
 }
 
-variable "policy" {
-  description = "The bucket policy in JSON."
-  type        = string
-  default     = null
+variable "website_index_document" {
+    description = "S3 returns this index document when requests are made to the root domain or any of the subfolders"
+    type        = string
+    default     = null
+}
+
+variable "website_error_document" {
+    description = "An absolute path to the document to return in case of a 4XX error"
+    type        = string
+    default     = null
+}
+
+variable "website_redirect_all" {
+    description = "A hostname to redirect all website requests for this bucket to"
+    type        = string
+    default     = null
+}
+
+variable "website_routing_rules" {
+    description = "A json array containing routing rules describing redirect behavior and when redirects are applied"
+    type        = string
+    default     = null
 }

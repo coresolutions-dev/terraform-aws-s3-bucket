@@ -31,5 +31,23 @@ resource "aws_s3_bucket" "bucket" {
             target_bucket = target_bucket.value
             target_prefix = var.logging_target_prefix  
         }
-    }    
+    } 
+
+    dynamic "website" {
+        for_each = var.website_index_document != null ? [ var.website_index_document ] : []
+
+        content {
+            index_document = var.website_index_document
+            error_document = var.website_error_document
+            routing_rules = var.website_routing_rules  
+        }
+    } 
+
+    dynamic "website" {
+        for_each = var.website_redirect_all != null ? [ var.website_redirect_all ] : []
+
+        content {
+            redirect_all_requests_to = var.website_redirect_all 
+        }
+    }  
 } 

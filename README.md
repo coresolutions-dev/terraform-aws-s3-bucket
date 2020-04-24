@@ -25,20 +25,23 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 ## Inputs
 
 
-|          Name         |                                            Description                                              |    Type     | Default | Required |
-| --------------------- | --------------------------------------------------------------------------------------------------- | ----------- | --------| ---------|
-| bucket_name           | Name for the bucket, if omitted, Terraform will assign a random unique name.                        | string      | None    | No       |
-| prefix                | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
-| acl                   | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply | string      | private | No       |
-| versioning            | Boolean to enable versioning                                                                        | bool        | false   | No       |
-| mfa_delete            | Boolean to enable MFA Delete on versioned bucket                                                    | bool        | false   | No       |
-| encryption            | Boolean to enable encryption                                                                        | bool        | true    | No       |
-| kms_key               | ARN of the KMS key to use, if omitted and **encryption** is set to true SSE-S3 is used.             | string      | None    | No       |
-| logging_target_bucket | The name of the bucket that will receive the log objects                                            | string      | None    | No       |
-| logging_target_prefix | key prefix for log objects.                                                                         | string      | None    | No       |
-| policy                | The bucket policy in JSON.                                                                          | string      | None    | No       |
-| tags                  | Map of tags to apply                                                                                | map(string) | None    | No       |
-
+|          Name          |                                            Description                                              |    Type     | Default | Required |
+| ---------------------- | --------------------------------------------------------------------------------------------------- | ----------- | --------| ---------|
+| bucket_name            | Name for the bucket, if omitted, Terraform will assign a random unique name.                        | string      | None    | No       |
+| prefix                 | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
+| acl                    | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply | string      | private | No       |
+| policy                 | The bucket policy in JSON                                                                           | string      | None    | No       |
+| versioning             | Boolean to enable versioning                                                                        | bool        | false   | No       |
+| mfa_delete             | Boolean to enable MFA Delete on versioned bucket                                                    | bool        | false   | No       |
+| encryption             | Boolean to enable encryption                                                                        | bool        | true    | No       |
+| kms_key                | ARN of the KMS key to use, if omitted and **encryption** is set to true SSE-S3 is used              | string      | None    | No       |
+| logging_target_bucket  | The name of the bucket that will receive the log objects                                            | string      | None    | No       |
+| logging_target_prefix  | key prefix for log objects                                                                          | string      | None    | No       |
+| website_index_document | S3 returns this index document when requests are made to the root domain or any of the subfolders **(Conflicts with website_redirect_all)**   | string      | None    | No       |
+| website_error_document | An absolute path to the document to return in case of a 4XX error                                   | string      | None    | No       |
+| website_redirect_all   | A hostname to redirect all website requests for this bucket to                                      | string      | None    | No       |
+| website_routing_rules  | A json array containing routing rules describing redirect behavior and when redirects are applied   | string      | None    | No       |
+| tags                   | Map of tags to apply                                                                                | map(string) | None    | No       |
 
 ## Outputs
 
