@@ -28,11 +28,11 @@ resource "aws_s3_bucket" "bucket" {
     }
 
     dynamic "grant" {
-        for_each = var.grants != null ? var.grants : []
+        for_each = var.grants
 
         content {
-            type        = lookup(grant.value, "type")
-            permissions = [ for permission in split(",", lookup(grant.value, "permissions")) : trimspace(permission) ]
+            type        = grant.value.type
+            permissions = grant.value.permissions
             id          = lookup(grant.value, "id", null)
             uri         = lookup(grant.value, "uri", null)
         }
@@ -65,5 +65,18 @@ resource "aws_s3_bucket" "bucket" {
         content {
             redirect_all_requests_to = var.website_redirect_all 
         }
-    }  
+    }
+
+    dynamic "cors_rule" {
+        for_each = var.cors_rules
+
+        content {
+            allowed_methods = cors_rule.value.allowed_methods
+            allowed_origins = cors_rule.value.allowed_origins
+            allowed_headers = lookup(cors_rule.value, "allowed_headers", null)
+            expose_headers  = lookup(cors_rule.value, "expose_headers", null)
+            max_age_seconds = lookup(cors_rule.value, "max_age_seconds", null)
+            
+        }
+    }
 } 

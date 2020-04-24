@@ -16,8 +16,8 @@ variable "acl" {
 
 variable "grants" {
     description = "An ACL policy grant to apply: https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl"
-    type        = list(map(any))
-    default     = null
+    type        = any
+    default     = []
 }
 
 variable "policy" {
@@ -108,4 +108,10 @@ variable "website_routing_rules" {
     description = "A json array containing routing rules describing redirect behavior and when redirects are applied"
     type        = string
     default     = null
+}
+
+variable "cors_rules" {
+    description = "A list of CORS (cross-origin resource sharing) rules"
+    type        = any
+    default     = []
 }
