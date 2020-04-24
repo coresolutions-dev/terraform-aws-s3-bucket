@@ -29,7 +29,8 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | ---------------------- | --------------------------------------------------------------------------------------------------- | ----------- | --------| ---------|
 | bucket_name            | Name for the bucket, if omitted, Terraform will assign a random unique name.                        | string      | None    | No       |
 | prefix                 | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
-| acl                    | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply | string      | private | No       |
+| acl                    | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply **(Conflicts with grant)**  | string      | private | No       |
+| grants                 | A list of [ACL Policy grants ](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl) to apply **(Conflicts with acl)** | list(map)      | None | No       |
 | policy                 | The bucket policy in JSON                                                                           | string      | None    | No       |
 | versioning             | Boolean to enable versioning                                                                        | bool        | false   | No       |
 | mfa_delete             | Boolean to enable MFA Delete on versioned bucket                                                    | bool        | false   | No       |
@@ -42,6 +43,16 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | website_redirect_all   | A hostname to redirect all website requests for this bucket to                                      | string      | None    | No       |
 | website_routing_rules  | A json array containing routing rules describing redirect behavior and when redirects are applied   | string      | None    | No       |
 | tags                   | Map of tags to apply                                                                                | map(string) | None    | No       |
+
+
+### Maps in the grants list supports the following, all must be of type `string`:
+| Key | Value | Required |
+| ----|------| --------- |
+| type | Type of grantee to apply for, valid values are `CanonicalUser` and `Group` AmazonCustomerByEmail is not supported | Yes |
+| permissions | permissions to apply for grantee. Valid values are `READ` `WRITE` `READ_ACP` `WRITE_ACP` `FULL_CONTROL` | Yes |
+| id  | Canonical user id to grant for, used only when type is CanonicalUser | No |
+| uri | Uri address to grant for. Used only when type is Group | No |
+
 
 ## Outputs
 

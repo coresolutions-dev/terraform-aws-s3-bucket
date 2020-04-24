@@ -11,7 +11,13 @@ variable "prefix" {
 variable "acl" {
     description = "Canned ACL to apply: https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl"
     type        = string
-    default     = "private"
+    default     = null
+}
+
+variable "grants" {
+    description = "An ACL policy grant to apply: https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl"
+    type        = list(map(any))
+    default     = null
 }
 
 variable "policy" {

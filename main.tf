@@ -23,6 +23,18 @@ resource "aws_s3_bucket" "bucket" {
         }
     }
 
+    dynamic "grant" {
+        for_each = var.grants != null ? var.grants : []
+
+        content {
+            type        = lookup(grant.value, "type")
+            permissions = [ for permission in split(",", lookup(grant.value, "permissions")) : trimspace(permission) ]
+            id          = lookup(grant.value, "id", null)
+            uri         = lookup(grant.value, "uri", null)
+        }
+    }
+
+
     dynamic "logging" {
         for_each = var.logging_target_bucket != null ? [ var.logging_target_bucket ] : []
         iterator = target_bucket
