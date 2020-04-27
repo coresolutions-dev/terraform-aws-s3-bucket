@@ -30,7 +30,7 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | bucket_name            | Name for the bucket, if omitted, Terraform will assign a random unique name.                        | string      | None    | No       |
 | prefix                 | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
 | acl                    | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply **(Conflicts with grant)**  | string      | private | No       |
-| grants                 | A list of [ACL Policy grants ](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl) to apply **(Conflicts with acl)** | list(object))      | None | No       |
+| grants                 | A list of [ACL Policy grants ](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl) to apply **(Conflicts with acl)** | list(object)      | None | No       |
 | policy                 | The bucket policy in JSON                                                                           | string      | None     | No       |
 | region                 | The AWS region this bucket should reside in, if omitted the region of the callee is used            | string      | None     | No      |
 | request_payer          | Who pays the cost of Amazon S3 data transfer. Can be either `BucketOwner` or `Requester`            | string      | BucketOwner | No    |
@@ -46,7 +46,8 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | website_error_document | An absolute path to the document to return in case of a 4XX error                                   | string      | None    | No       |
 | website_redirect_all   | A hostname to redirect all website requests for this bucket to                                      | string      | None    | No       |
 | website_routing_rules  | A json array containing routing rules describing redirect behavior and when redirects are applied   | string      | None    | No       |
-| cors_rules             | A list of CORS (cross-origin resource sharing) rules                                                |list(object) | None    | No       |
+| cors_rules             | A list of CORS (cross-origin resource sharing) rules                                                | list(object)| None    | No       |
+| lifecycle_rules        | A list of object lifecycle rules                                                                    | list(object) | None   | No
 | tags                   | Map of tags to apply                                                                                | map(string) | None    | No       |
 
 
@@ -66,6 +67,55 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | allowed_origins | Specifies which origins are allowed                                                       | list(string) | No        |
 | expose_headers  | Specifies expose header in the response                                                   | list(string) | No        |
 | max_age_seconds | Specifies time in seconds that browser can cache the response for a preflight request     | number       | No        |
+
+
+### Objects in the lifecycle_rules list supports the following:
+| Key                                    |                                              Value                                                 | Type    | Required |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------- | ------- | -------- |
+| enabled                                | Specifies lifecycle rule status                                                                    | bool        | Yes |
+| id                                     | Unique identifier for the rule                                                                     | string      | No |
+| prefix                                 | Object key prefix identifying one or more objects to which the rule applies                        | string      | No |
+| tags                                   | Specifies object tags key and value                                                                | map(string) | No |
+| abort_incomplete_multipart_upload_days | The number of days after initiating a multipart upload when the multipart upload must be completed | number      | No |
+| transitions                            | List of transition objects to apply (documented below)                                             | object      | No |
+| noncurrent_version_transitions         | Specifies when noncurrent object versions transitions (documented below)                           | object      | No |
+| noncurrent_version_expiration          | Specifies when noncurrent object versions expire (documented below)                                | object      | No |
+| expiration                             | Specifies when an object expires (documented below)                                                | object      | No |
+
+At least one of `expiration` `transition` `noncurrent_version_expiration` `noncurrent_version_transition` must be specified, see object details below
+
+#### Objects in the transitions list support the following
+| Key                                    |                                              Value                                                 | Type    | Required |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------- | ------- | -------- |
+| storage_class | Specifies the storage class to which you want the object to transition. Can be `ONEZONE_IA` `STANDARD_IA` `INTELLIGENT_TIERING` `GLACIER` or `DEEP_ARCHIVE` | string | Yes |
+| date | Specifies the date after which you want the corresponding action to take effect               | string | No |
+| days | Specifies the number of days after object creation when the specific rule action takes effect | number | No |
+
+#### Objects in the noncurrent_version_transitions object support the following
+| Key           |                                              Value                                          | Type    | Required |      
+| ------------- | ------------------------------------------------------------------------------------------- | ------- | -------- | 
+| storage_class | Specifies the Amazon S3 storage class to which you want the noncurrent versions object to transition. Can be `ONEZONE_IA` `STANDARD_IA` `INTELLIGENT_TIERING` `GLACIER` or `DEEP_ARCHIVE` | string | Yes |
+| days | Specifies the number of days an object is noncurrent object versions expire | number | Yes |
+
+#### The noncurrent_version_expiration object supports the following
+| Key  |                                     Value                                   |  Type  | Required |      
+| ---- | --------------------------------------------------------------------------- | ----- | -------- |
+| days | Specifies the number of days an object is noncurrent object versions expire | number | Yes      |
+
+#### The expiration object supports the following
+| Key                           |                                              Value                                                 | Type    | Required |   
+| ----------------------------- | -------------------------------------------------------------------------------------------------- | ------- | -------- |
+| date                          | Specifies the date after which you want the corresponding action to take effect                    | string  | No       |
+| days                          | Specifies the number of days after object creation when the specific rule action takes effect      | number  | No       |
+| expired_object_delete_marker  | On a versioned bucket (versioning-enabled or versioning-suspended bucket), you can add this element in the lifecycleconfiguration to direct S3 to delete expired object delete markers | bool | No
+
+
+
+
+
+
+
+
 
 
 ## Outputs

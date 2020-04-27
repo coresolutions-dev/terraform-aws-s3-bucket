@@ -35,7 +35,7 @@ variable "region" {
 variable "request_payer" {
   description = "Who pays the cost of Amazon S3 data transfer. Can be either BucketOwner or Requester"
   type        = string
-  default     = null
+  default     = "BucketOwner"
 }
 
 variable "versioning" {
@@ -112,6 +112,12 @@ variable "website_routing_rules" {
 
 variable "cors_rules" {
     description = "A list of CORS (cross-origin resource sharing) rules"
+    type        = any
+    default     = []
+}
+
+variable "lifecycle_rules" {
+    description = "A list of object lifecycle rules"
     type        = any
     default     = []
 }

@@ -79,4 +79,53 @@ resource "aws_s3_bucket" "bucket" {
             
         }
     }
+
+    dynamic "lifecycle_rule" {
+        for_each = var.lifecycle_rules
+
+        content {
+            enabled                                = lifecycle_rule.value.enabled
+            id                                     = lookup(lifecycle_rule.value, "id", null)
+            prefix                                 = lookup(lifecycle_rule.value, "prefix", null)
+            tags                                   = lookup(lifecycle_rule.value, "tags", null)
+            abort_incomplete_multipart_upload_days = lookup(lifecycle_rule.value, "abort_incomplete_multipart_upload_days", null)
+
+            dynamic "transition" {
+                for_each = lookup(lifecycle_rule.value, "transitions", [])
+
+                content {
+                    storage_class = transition.value.storage_class 
+                    days          = lookup(transition.value, "days", null)
+                    date          = lookup(transition.value, "date", null)
+                }
+            }
+
+            dynamic "noncurrent_version_transition" {
+                for_each = lookup(lifecycle_rule.value, "noncurrent_version_transitions", [])
+
+                content {
+                    storage_class = noncurrent_version_transition.value.storage_class 
+                    days          = noncurrent_version_transition.value.days
+                }
+            }
+
+            dynamic "noncurrent_version_expiration" {
+                for_each = lookup(lifecycle_rule.value, "noncurrent_version_expiration", [])
+
+                content {
+                    days = noncurrent_version_expiration.value
+                }
+            }
+            
+            dynamic "expiration" {
+                for_each = lookup(lifecycle_rule.value, "expiration", null ) != null ? [ lifecycle_rule.value.expiration ] : [] 
+
+                content {
+                    days                         = lookup(expiration.value, "days", null)
+                    date                         = lookup(expiration.value, "date", null)
+                    expired_object_delete_marker = lookup(expiration.value, "expired_object_delete_marker", null)
+                }
+            }
+        }
+    }
 } 
