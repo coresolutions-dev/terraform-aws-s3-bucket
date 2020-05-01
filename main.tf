@@ -1,6 +1,15 @@
+locals {
+    init_name = var.bucket_name != null ? var.bucket_name : "corebucket-${random_id.rand.0.dec}"
+    bucket_name = var.prefix ? "${local.init_name}-${random_id.rand.0.dec}" : local.init_name
+}
+
+resource "random_id" "rand" {
+    count = var.bucket_name == null || var.prefix == true ? 1 : 0
+    byte_length = 4
+}
+
 resource "aws_s3_bucket" "bucket" {
-    bucket_prefix       = var.prefix ? var.bucket_name : null
-    bucket              = var.prefix ? null : var.bucket_name
+    bucket              = local.bucket_name
     acl                 = var.acl
     tags                = var.tags
     policy              = var.policy
@@ -37,7 +46,6 @@ resource "aws_s3_bucket" "bucket" {
             uri         = lookup(grant.value, "uri", null)
         }
     }
-
 
     dynamic "logging" {
         for_each = var.logging_target_bucket != null ? [ var.logging_target_bucket ] : []
@@ -128,4 +136,108 @@ resource "aws_s3_bucket" "bucket" {
             }
         }
     }
-} 
+
+    dynamic "replication_configuration" {
+        for_each = var.replication_rules != [] ? [1] : []
+
+        content {
+            role  = var.replication_role != null ? var.replication_role : aws_iam_role.replication.0.arn
+            
+            dynamic "rules" {
+                for_each = var.replication_rules
+
+                content {
+                    status   = rules.value.status
+                    id       = lookup(rules.value, "id", null)
+                    priority = lookup(rules.value, "priority", null)
+                    prefix   = lookup(rules.value, "prefix", null)
+
+                    dynamic "source_selection_criteria" {
+                        for_each = lookup(rules.value, "replicate_encrypted_objects", null) != null ? [ rules.value.replicate_encrypted_objects ] : []
+
+                        content {
+                            sse_kms_encrypted_objects {
+                                enabled = rules.value.replicate_encrypted_objects
+                            }
+                        }
+                    }
+                    
+                    dynamic "destination" {
+                        for_each = [ rules.value.destination ]
+
+                        content {
+                            bucket             = destination.value.bucket
+                            storage_class      = lookup(destination.value, "storage_class", null)
+                            replica_kms_key_id = lookup(destination.value, "replica_kms_key_id", null)
+                            account_id         = lookup(destination.value, "account_id", null) 
+                        }
+                    }
+
+                    dynamic "filter" {
+                        for_each = lookup(rules.value, "filter", null) != null ? [ rules.value.filter ] : []
+
+                        content {
+                            prefix = lookup(filter.value, "prefix", null)
+                            tags   = lookup(filter.value, "tags", null)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+resource "aws_iam_role" "replication" {
+    count      = var.replication_rules != [] && var.replication_role == null ? 1 : 0
+    name       = "CoreS3ReplicationRole_${local.bucket_name}"
+
+    assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+POLICY
+}
+
+data "aws_iam_policy_document" "replication" {
+    count = var.replication_rules != [] && var.replication_role == null ? 1 : 0
+
+    statement {
+        actions   = ["s3:GetReplicationConfiguration",
+                     "s3:ListBucket"]
+        resources = ["${aws_s3_bucket.bucket.arn}"]
+    }
+
+    statement {
+        actions   = ["s3:GetObjectVersion",
+                     "s3:GetObjectVersionAcl"]
+        resources = ["${aws_s3_bucket.bucket.arn}/*"]
+    }
+
+    statement {
+        actions   = ["s3:ReplicateObject",
+                     "s3:ReplicateDelete"]
+        resources = formatlist("%s/*",distinct([ for rule in var.replication_rules : lookup(rule, "destination").bucket ]))
+    }
+}
+
+resource "aws_iam_policy" "replication" {
+    count      = var.replication_rules != [] && var.replication_role == null ? 1 : 0
+    name       = "CoreS3ReplicationPolicy_${local.bucket_name}"
+    policy     = data.aws_iam_policy_document.replication.0.json
+}
+
+resource "aws_iam_role_policy_attachment" "replication" {
+    count      = var.replication_rules != [] && var.replication_role == null ? 1 : 0
+    role       = aws_iam_role.replication.0.name
+    policy_arn = aws_iam_policy.replication.0.arn
+}

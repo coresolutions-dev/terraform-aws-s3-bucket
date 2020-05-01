@@ -28,7 +28,7 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 |          Name          |                                            Description                                              |    Type     | Default | Required |
 | ---------------------- | --------------------------------------------------------------------------------------------------- | ----------- | --------| ---------|
 | bucket_name            | Name for the bucket, if omitted, Terraform will assign a random unique name.                        | string      | None    | No       |
-| prefix                 | If true sets bucket_name to bucket_prefix                                                           | bool        | false   | No       |
+| prefix                 | If true creates a unique bucket name beginning with the specified bucket_name                  | bool        | false   | No       |
 | acl                    | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply **(Conflicts with grant)**  | string      | private | No       |
 | grants                 | A list of [ACL Policy grants ](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl) to apply **(Conflicts with acl)** | list(object)      | None | No       |
 | policy                 | The bucket policy in JSON                                                                           | string      | None     | No       |
@@ -46,8 +46,10 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | website_error_document | An absolute path to the document to return in case of a 4XX error                                   | string      | None    | No       |
 | website_redirect_all   | A hostname to redirect all website requests for this bucket to                                      | string      | None    | No       |
 | website_routing_rules  | A json array containing routing rules describing redirect behavior and when redirects are applied   | string      | None    | No       |
-| cors_rules             | A list of CORS (cross-origin resource sharing) rules                                                | list(object)| None    | No       |
-| lifecycle_rules        | A list of object lifecycle rules                                                                    | list(object) | None   | No
+| cors_rules             | A list of CORS (cross-origin resource sharing) rules (documented below)                             | list(object)| None    | No       |
+| lifecycle_rules        | A list of object lifecycle rules (documented below)                                                 | list(object)| None    | No       |
+| replication_role       | The ARN of the IAM role for Amazon S3 to assume when replicating objects, if omitted with rules specified in `replication_rules` a role will be created automatically as `CoreS3ReplicationRole_BUCKETNAME` | string | No |
+| replication_rules      | Objects containing replication configuration rules (documented below)                             | list(object)      | None    | No       |
 | tags                   | Map of tags to apply                                                                                | map(string) | None    | No       |
 
 
@@ -84,34 +86,55 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 
 At least one of `expiration` `transition` `noncurrent_version_expiration` `noncurrent_version_transition` must be specified, see object details below
 
-#### Objects in the transitions list support the following
+### Objects in the transitions list support the following:
 | Key                                    |                                              Value                                                 | Type    | Required |
 | -------------------------------------- | -------------------------------------------------------------------------------------------------- | ------- | -------- |
 | storage_class | Specifies the storage class to which you want the object to transition. Can be `ONEZONE_IA` `STANDARD_IA` `INTELLIGENT_TIERING` `GLACIER` or `DEEP_ARCHIVE` | string | Yes |
 | date | Specifies the date after which you want the corresponding action to take effect               | string | No |
 | days | Specifies the number of days after object creation when the specific rule action takes effect | number | No |
 
-#### Objects in the noncurrent_version_transitions object support the following
+### Objects in the noncurrent_version_transitions object support the following:
 | Key           |                                              Value                                          | Type    | Required |      
 | ------------- | ------------------------------------------------------------------------------------------- | ------- | -------- | 
 | storage_class | Specifies the Amazon S3 storage class to which you want the noncurrent versions object to transition. Can be `ONEZONE_IA` `STANDARD_IA` `INTELLIGENT_TIERING` `GLACIER` or `DEEP_ARCHIVE` | string | Yes |
 | days | Specifies the number of days an object is noncurrent object versions expire | number | Yes |
 
-#### The noncurrent_version_expiration object supports the following
+### The noncurrent_version_expiration object supports the following:
 | Key  |                                     Value                                   |  Type  | Required |      
 | ---- | --------------------------------------------------------------------------- | ----- | -------- |
 | days | Specifies the number of days an object is noncurrent object versions expire | number | Yes      |
 
-#### The expiration object supports the following
+### The expiration object supports the following:
 | Key                           |                                              Value                                                 | Type    | Required |   
 | ----------------------------- | -------------------------------------------------------------------------------------------------- | ------- | -------- |
 | date                          | Specifies the date after which you want the corresponding action to take effect                    | string  | No       |
 | days                          | Specifies the number of days after object creation when the specific rule action takes effect      | number  | No       |
 | expired_object_delete_marker  | On a versioned bucket (versioning-enabled or versioning-suspended bucket), you can add this element in the lifecycleconfiguration to direct S3 to delete expired object delete markers | bool | No
 
+### Objects in the replication_rules list support the following:
+| Key                          |                                             Value                                                         | Type | Required |       
+| -------------------------    | --------------------------------------------------------------------------------------------------------- | ------ | ------ |     
+| destination                  | Specifies the destination for the rule (documented below)                                                 | object | Yes    |
+| status                       | The status of the rule. Either Enabled or Disabled. The rule is ignored if status is not Enabled          | string | Yes    |
+| id                           | Unique identifier for the rule                                                                            | string | No     |
+| priority                     | The priority associated with the rule, default is 0, must be unique between multiple rules                | number | No     |
+| replicate_encrypted_objects  | If `true` replicate SSE-KMS encrypted objects, `replica_kms_key_id` in the destination object must also be specified, default value is `false` | bool | No |
+| prefix                       | Object keyname prefix identifying one or more objects to which the rule applies                           | string | No     |
+| filter                       | Filter that identifies subset of objects to which the replication rule applies (documented below)         | object | No     |
 
+### The filter object supports the following:
+| Key                       |                               Value                            | Type   | Required |       
+| ------------------------- | -------------------------------------------------------------- | ------ | -------- |  
+| prefix | Object keyname prefix that identifies subset of objects to which the rule applies | string | No       |
+| tags   | A map of tags that identifies subset of objects to which the rule applies. The rule applies only to objects having all the tags in its tagset | map(string) | No |
 
-
+### The destination object supports the following:
+| Key   |                               Value                             | Type | Required |       
+| ----- | --------------------------------------------------------------- | ---- | -------- |   
+| bucket | The ARN of the S3 bucket where you want Amazon S3 to store replicas of the object identified by the rule | string | Yes |
+| storage_class | The class of storage used to store the object. Can be `STANDARD` `REDUCED_REDUNDANCY` `STANDARD_IA` `ONEZONE_IA` `INTELLIGENT_TIERING` `GLACIER` or `DEEP_ARCHIVE` | string | No |
+| replica_kms_key_id | Destination KMS encryption key ARN for SSE-KMS replication. Must be used in conjunction with `source_encrypted_objects` | string | No |
+| account_id | The Account ID to use for overriding the object owner on replication  | string | No |
 
 
 

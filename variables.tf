@@ -121,3 +121,15 @@ variable "lifecycle_rules" {
     type        = any
     default     = []
 }
+
+variable "replication_rules" {
+    description = "A list of objects containing replication configuration rules"
+    type        = any
+    default     = []
+}
+
+variable "replication_role" {
+    description = "The ARN of the IAM role for Amazon S3 to assume when replicating objects"
+    type        = string
+    default     = null
+}
