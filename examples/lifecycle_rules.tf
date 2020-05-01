@@ -30,7 +30,7 @@ module "lifecycle_rules_example" {
 module "lifecycle_rules_versioned_example" {
   source = "../"
   
-  acl    = "private"
+  acl        = "private"
   versioning = true
 
   lifecycle_rules = [{
