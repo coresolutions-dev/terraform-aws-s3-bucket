@@ -48,7 +48,7 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | website_routing_rules  | A json array containing routing rules describing redirect behavior and when redirects are applied   | string      | None    | No       |
 | cors_rules             | A list of CORS (cross-origin resource sharing) rules (documented below)                             | list(object)| None    | No       |
 | lifecycle_rules        | A list of object lifecycle rules (documented below)                                                 | list(object)| None    | No       |
-| replication_role       | The ARN of the IAM role for Amazon S3 to assume when replicating objects, if omitted with rules specified in `replication_rules` a role will be created automatically as `CoreS3ReplicationRole_BUCKETNAME` | string | No |
+| replication_role       | The ARN of the IAM role for Amazon S3 to assume when replicating objects, if omitted with rules specified in `replication_rules` a role will be created automatically as `CoreS3ReplicationRole_BUCKETNAME` | string | None | No |
 | replication_rules      | Objects containing replication configuration rules (documented below)                             | list(object)      | None    | No       |
 | tags                   | Map of tags to apply                                                                                | map(string) | None    | No       |
 
