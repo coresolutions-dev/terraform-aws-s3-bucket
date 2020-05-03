@@ -18,9 +18,13 @@ resource "aws_s3_bucket" "bucket" {
     region              = var.region
     request_payer       = var.request_payer 
 
-    versioning {
-        enabled    = var.versioning
-        mfa_delete = var.mfa_delete
+    dynamic "versioning" {
+        for_each = var.versioning ? [1] : []
+        
+        content {
+            enabled    = var.versioning
+            mfa_delete = var.mfa_delete
+        }
     }
 
     dynamic "server_side_encryption_configuration" {
@@ -184,6 +188,27 @@ resource "aws_s3_bucket" "bucket" {
                 }
             }
         }
+    }
+
+    dynamic "object_lock_configuration"{
+        for_each = var.object_lock_configuration != null ? [ var.object_lock_configuration ] : []
+
+        content {
+            object_lock_enabled = object_lock_configuration.value.object_lock_enabled ? "Enabled" : null
+            
+            dynamic "rule" {
+                for_each = lookup(object_lock_configuration.value, "default_mode", null) != null ? [1] : []
+
+                content {
+                    default_retention {
+                        mode = object_lock_configuration.value.default_mode
+                        days = lookup(object_lock_configuration.value, "default_days", null)
+                        years = lookup(object_lock_configuration.value, "default_years", null) 
+                    }
+                }
+            }
+        }
+
     }
 }
 

@@ -15,7 +15,7 @@ variable "acl" {
 }
 
 variable "grants" {
-    description = "An ACL policy grant to apply: https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl"
+    description = "A list of ACL policy grants to apply: https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl"
     type        = any
     default     = []
 }
@@ -45,7 +45,7 @@ variable "versioning" {
 
 variable "mfa_delete" {
     type = bool
-    default = null
+    default = false
 }
 
 variable "force_destroy" {
@@ -131,5 +131,11 @@ variable "replication_rules" {
 variable "replication_role" {
     description = "The ARN of the IAM role for Amazon S3 to assume when replicating objects"
     type        = string
+    default     = null
+}
+
+variable "object_lock_configuration" {
+    description = "The Object Lock Configuration you want to apply to the bucket"
+    type        = any
     default     = null
 }
