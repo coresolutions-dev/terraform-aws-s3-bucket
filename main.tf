@@ -153,11 +153,11 @@ resource "aws_s3_bucket" "bucket" {
                     prefix   = lookup(rules.value, "prefix", null)
 
                     dynamic "source_selection_criteria" {
-                        for_each = lookup(rules.value, "replicate_encrypted_objects", null) != null ? [ rules.value.replicate_encrypted_objects ] : []
+                        for_each = lookup(rules.value, "replicate_kms_encrypted_objects", false) ? [ rules.value.replicate_kms_encrypted_objects ] : []
 
                         content {
                             sse_kms_encrypted_objects {
-                                enabled = rules.value.replicate_encrypted_objects
+                                enabled = rules.value.replicate_kms_encrypted_objects
                             }
                         }
                     }

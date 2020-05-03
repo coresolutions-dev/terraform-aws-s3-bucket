@@ -118,7 +118,7 @@ At least one of `expiration` `transition` `noncurrent_version_expiration` `noncu
 | status                       | The status of the rule. Either Enabled or Disabled. The rule is ignored if status is not Enabled          | string | Yes    |
 | id                           | Unique identifier for the rule                                                                            | string | No     |
 | priority                     | The priority associated with the rule, default is 0, must be unique between multiple rules                | number | No     |
-| replicate_encrypted_objects  | If `true` replicate SSE-KMS encrypted objects, `replica_kms_key_id` in the destination object must also be specified, default value is `false` | bool | No |
+| replicate_kms_encrypted_objects  | If `true` replicate SSE-KMS encrypted objects, `replica_kms_key_id` in the destination object must also be specified, default value is `false` | bool | No |
 | prefix                       | Object keyname prefix identifying one or more objects to which the rule applies                           | string | No     |
 | filter                       | Filter that identifies subset of objects to which the replication rule applies (documented below)         | object | No     |
 

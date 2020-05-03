@@ -1,5 +1,5 @@
 module "replication_example" {
-  source      = "../"
+  source     = "../"
   versioning = true
 
   replication_rules = [{
@@ -25,6 +25,6 @@ module "replication_example" {
 }
 
 module "destination_bucket" {
-  source      = "../"
+  source     = "../"
   versioning = true
 }
