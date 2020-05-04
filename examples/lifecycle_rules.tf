@@ -1,5 +1,5 @@
 module "lifecycle_rules_example" {
-  source      = "../"
+  source      = "coresolutions-ltd/s3-bucket/aws"
 
   lifecycle_rules = [{
     id      = "log"
@@ -28,7 +28,7 @@ module "lifecycle_rules_example" {
 
 
 module "lifecycle_rules_versioned_example" {
-  source = "../"
+  source = "coresolutions-ltd/s3-bucket/aws"
   
   acl        = "private"
   versioning = true

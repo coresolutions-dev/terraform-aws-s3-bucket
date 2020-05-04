@@ -1,5 +1,5 @@
 module "object_lock_example" {
-  source      = "../"
+  source      = "coresolutions-ltd/s3-bucket/aws"
 
   object_lock_configuration  = {
     object_lock_enabled = true

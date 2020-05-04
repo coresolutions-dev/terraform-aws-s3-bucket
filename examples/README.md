@@ -5,14 +5,14 @@ Full examples can be found in the corresponding TF files
 ### Basic:
 ```sh
 module "basic" {
-    source = "../"
+    source = "coresolutions-ltd/s3-bucket/aws"
 }
 ```
 
 ### Replication:
 ```sh
 module "replication_example" {
-  source     = "../"
+  source     = "coresolutions-ltd/s3-bucket/aws"
   versioning = true
 
   replication_rules = [{
@@ -26,7 +26,7 @@ module "replication_example" {
 }
 
 module "destination_bucket" {
-  source     = "../"
+  source     = "coresolutions-ltd/s3-bucket/aws"
   versioning = true
 }
 ```
@@ -34,7 +34,7 @@ module "destination_bucket" {
 ### Lifecycle Rules:
 ```sh
 module "lifecycle_rules_example" {
-  source      = "../"
+  source      = "coresolutions-ltd/s3-bucket/aws"
 
   lifecycle_rules = [{
     enabled = true
@@ -54,7 +54,7 @@ module "lifecycle_rules_example" {
 ### Object Locking:
 ```sh
 module "object_lock_example" {
-  source      = "../"
+  source      = "coresolutions-ltd/s3-bucket/aws"
 
   object_lock_configuration  = {
     object_lock_enabled = true
@@ -65,7 +65,7 @@ module "object_lock_example" {
 ### Website Configuration:
 ```sh
 module "website_example" {
-    source      = "../"
+    source      = "coresolutions-ltd/s3-bucket/aws"
     website_index_document = "index.html"
     website_error_document = "error.html"
 }
@@ -74,7 +74,7 @@ module "website_example" {
 ### CORS Rules:
 ```sh
 module "cors_rules_example" {
-  source      = "../"
+  source      = "coresolutions-ltd/s3-bucket/aws"
 
   cors_rules = [{
     allowed_headers = ["*"]
@@ -98,7 +98,7 @@ resource "aws_kms_key" "mykey" {
 }
 
 module "custom_kms_key_example" {
-    source      = "../"
+    source      = "coresolutions-ltd/s3-bucket/aws"
     bucket_name = "custom-kms-bucket"
     encryption  = true
     kms_key     = aws_kms_key.mykey.arn

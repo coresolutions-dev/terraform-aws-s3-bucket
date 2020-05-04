@@ -1,5 +1,5 @@
 module "cors_rules_example" {
-  source      = "../"
+  source      = "coresolutions-ltd/s3-bucket/aws"
 
   cors_rules = [{
     allowed_headers = ["*"]

@@ -13,7 +13,7 @@ Terraform module which creates an S3 bucket whilst extrapolating as much complex
 
 ```sh
 module "basic" {
-    source = "../"
+    source = "coresolutions-ltd/s3-bucket/aws"
     bucket_name = "bucket-name"
     prefix = true
 }

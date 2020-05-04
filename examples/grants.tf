@@ -1,7 +1,7 @@
 data "aws_canonical_user_id" "current_user" {}
 
 module "grants_example" {
-  source      = "../"
+  source      = "coresolutions-ltd/s3-bucket/aws"
 
   grants = [{
     id          = data.aws_canonical_user_id.current_user.id
