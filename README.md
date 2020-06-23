@@ -14,7 +14,7 @@ Terraform module which creates an S3 bucket whilst extrapolating as much complex
 ```sh
 module "basic" {
     source  = "coresolutions-ltd/s3-bucket/aws"
-    version = "~> 0.0.2"
+    version = "~> 0.0.3"
 
     bucket_name = "bucket-name"
     prefix      = true
@@ -151,11 +151,11 @@ At least one of `expiration` `transition` `noncurrent_version_expiration` `noncu
 > **NOTE** on object_lock_configuration: You can only enable S3 Object Lock for new buckets. If you need to turn on S3 Object Lock for an existing bucket, please contact AWS Support. When you create a bucket with S3 Object Lock enabled, Amazon S3 automatically enables versioning for the bucket. Once you create a bucket with S3 Object Lock enabled, you can't disable Object Lock or suspend versioning for the bucket.
 
 ## Outputs
-|             Name               |           Description           |
-| ------------------------------ | ------------------------------- |
-| s3_bucket_arn                  | Bucket ARN                      |
-| s3_bucket_id                   | Bucket ID/Name                  |
-| s3_bucket_region               | The bucket region               |
-| s3_bucket_domain_name          | The bucket domain name          |
-| s3_bucket_regional_domain_name | The regional bucket domain name |
-| s3_bucket_hosted_zone_id       | The buckets hosted zone ID      |
+|             Name     |           Description           |
+| -------------------- | ------------------------------- |
+| arn                  | Bucket ARN                      |
+| id                   | Bucket ID/Name                  |
+| region               | The bucket region               |
+| domain_name          | The bucket domain name          |
+| regional_domain_name | The regional bucket domain name |
+| hosted_zone_id       | The buckets hosted zone ID      |

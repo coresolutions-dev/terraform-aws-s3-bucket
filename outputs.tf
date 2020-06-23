@@ -1,14 +1,14 @@
-output "bucket_arn" {
+output "arn" {
     description = "ARN of the S3 bucket"
     value       = aws_s3_bucket.bucket.arn
 }
 
-output "bucket_id" {
+output "id" {
     description = "Name of the S3 bucket"
     value       = aws_s3_bucket.bucket.id
 }
 
-output "bucket_region" {
+output "region" {
     description = "Region of the S3 bucket"
     value       = aws_s3_bucket.bucket.region
 }
@@ -18,7 +18,7 @@ output "bucket_domain_name" {
     value       = aws_s3_bucket.bucket.bucket_domain_name
 }
 
-output "bucket_regional_domain_name" {
+output "regional_domain_name" {
     description = "Regional domain name of the S3 bucket"
     value       = aws_s3_bucket.bucket.bucket_regional_domain_name
 }
