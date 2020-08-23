@@ -10,7 +10,7 @@ module "replication_example" {
       bucket        = module.destination_bucket.bucket_arn
       storage_class = "STANDARD"
     }
-  }
+  }]
 }
 
 module "destination_bucket" {

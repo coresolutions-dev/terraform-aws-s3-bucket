@@ -1,10 +1,10 @@
 module "lifecycle_rules_example" {
-  source      = "coresolutions-ltd/s3-bucket/aws"
+  source = "coresolutions-ltd/s3-bucket/aws"
 
   lifecycle_rules = [{
     id      = "log"
     enabled = true
-    prefix = "log/"
+    prefix  = "log/"
 
     tags = {
       "rule"      = "log"
@@ -14,10 +14,10 @@ module "lifecycle_rules_example" {
     transitions = [{
       days          = 30
       storage_class = "STANDARD_IA"
-    },
-    {
-      days          = 60
-      storage_class = "GLACIER"
+      },
+      {
+        days          = 60
+        storage_class = "GLACIER"
     }]
 
     expiration = {
@@ -29,7 +29,7 @@ module "lifecycle_rules_example" {
 
 module "lifecycle_rules_versioned_example" {
   source = "coresolutions-ltd/s3-bucket/aws"
-  
+
   acl        = "private"
   versioning = true
 
@@ -40,10 +40,10 @@ module "lifecycle_rules_versioned_example" {
     noncurrent_version_transitions = [{
       days          = 30
       storage_class = "STANDARD_IA"
-    },
-    {
-      days          = 60
-      storage_class = "GLACIER"
+      },
+      {
+        days          = 60
+        storage_class = "GLACIER"
     }]
 
     noncurrent_version_expiration = {

@@ -34,7 +34,6 @@ More examples can be found [here](https://github.com/coresolutions-ltd/terraform
 | acl                    | [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply **(Conflicts with grant)**  | string      | private | No       |
 | grants                 | A list of [ACL Policy grants ](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#sample-acl) to apply **(Conflicts with acl)** | list(object)      | None | No       |
 | policy                 | The bucket policy in JSON                                                                           | string      | None     | No       |
-| region                 | The AWS region this bucket should reside in, if omitted the region of the callee is used            | string      | None     | No      |
 | request_payer          | Who pays the cost of Amazon S3 data transfer. Can be either `BucketOwner` or `Requester`            | string      | BucketOwner | No    |
 | force_destroy          | A boolean that indicates all objects (including any locked objects) should be deleted from the bucket so that the bucket can be destroyed without error | bool      | false    | No       |
 | acceleration_status    | Used to enable or suspend [Transfer Acceleration](https://docs.aws.amazon.com/AmazonS3/latest/dev/transfer-acceleration.html). Value can be `Enabled` or `Suspended`            | string      | None    | No       |
