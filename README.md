@@ -5,7 +5,7 @@
 [![Terraform Version](https://img.shields.io/badge/terraform-~%3E%200.12.20-623ce4.svg)](https://github.com/hashicorp/terraform/releases)
 [![License](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# Core S3 Bucket Terraform Module
+# S3 Bucket Terraform Module
 
 Terraform module which creates an S3 bucket whilst extrapolating as much complexity as possible.
 
@@ -14,7 +14,6 @@ Terraform module which creates an S3 bucket whilst extrapolating as much complex
 ```sh
 module "basic" {
     source  = "coresolutions-ltd/s3-bucket/aws"
-    version = "~> 0.0.3"
 
     bucket_name = "bucket-name"
     prefix      = true
@@ -96,26 +95,26 @@ At least one of `expiration` `transition` `noncurrent_version_expiration` `noncu
 | days | Specifies the number of days after object creation when the specific rule action takes effect | number | No |
 
 ### Objects in the lifecycle_rules(**noncurrent_version_transitions**) object support the following:
-| Key           |                                              Value                                          | Type    | Required |      
-| ------------- | ------------------------------------------------------------------------------------------- | ------- | -------- | 
+| Key           |                                              Value                                          | Type    | Required |
+| ------------- | ------------------------------------------------------------------------------------------- | ------- | -------- |
 | storage_class | Specifies the Amazon S3 storage class to which you want the noncurrent versions object to transition. Can be `ONEZONE_IA` `STANDARD_IA` `INTELLIGENT_TIERING` `GLACIER` or `DEEP_ARCHIVE` | string | Yes |
 | days | Specifies the number of days an object is noncurrent object versions expire | number | Yes |
 
 ### The lifecycle_rules(**noncurrent_version_expiration**) object support the following:
-| Key  |                                     Value                                   |  Type  | Required |      
+| Key  |                                     Value                                   |  Type  | Required |
 | ---- | --------------------------------------------------------------------------- | ----- | -------- |
 | days | Specifies the number of days an object is noncurrent object versions expire | number | Yes      |
 
 ### The lifecycle_rules(**expiration**) object support the following:
-| Key                           |                                              Value                                                 | Type    | Required |   
+| Key                           |                                              Value                                                 | Type    | Required |
 | ----------------------------- | -------------------------------------------------------------------------------------------------- | ------- | -------- |
 | date                          | Specifies the date after which you want the corresponding action to take effect                    | string  | No       |
 | days                          | Specifies the number of days after object creation when the specific rule action takes effect      | number  | No       |
 | expired_object_delete_marker  | On a versioned bucket (versioning-enabled or versioning-suspended bucket), you can add this element in the lifecycleconfiguration to direct S3 to delete expired object delete markers | bool | No
 
 ### Objects in the **replication_rules** list support the following:
-| Key                          |                                             Value                                                         | Type | Required |       
-| -------------------------    | --------------------------------------------------------------------------------------------------------- | ------ | ------ |     
+| Key                          |                                             Value                                                         | Type | Required |
+| -------------------------    | --------------------------------------------------------------------------------------------------------- | ------ | ------ |
 | destination                  | Specifies the destination for the rule (documented below)                                                 | object | Yes    |
 | status                       | The status of the rule. Either Enabled or Disabled. The rule is ignored if status is not Enabled          | string | Yes    |
 | id                           | Unique identifier for the rule                                                                            | string | No     |
@@ -125,22 +124,22 @@ At least one of `expiration` `transition` `noncurrent_version_expiration` `noncu
 | filter                       | Filter that identifies subset of objects to which the replication rule applies (documented below)         | object | No     |
 
 ### The replication_rules(**destination**) object support the following:
-| Key   |                               Value                             | Type | Required |       
-| ----- | --------------------------------------------------------------- | ---- | -------- |   
+| Key   |                               Value                             | Type | Required |
+| ----- | --------------------------------------------------------------- | ---- | -------- |
 | bucket | The ARN of the S3 bucket where you want Amazon S3 to store replicas of the object identified by the rule | string | Yes |
 | storage_class | The class of storage used to store the object. Can be `STANDARD` `REDUCED_REDUNDANCY` `STANDARD_IA` `ONEZONE_IA` `INTELLIGENT_TIERING` `GLACIER` or `DEEP_ARCHIVE` | string | No |
 | replica_kms_key_id | Destination KMS encryption key ARN for SSE-KMS replication. Must be used in conjunction with `source_encrypted_objects` | string | No |
 
 
 ### The replication_rules(**filter**) object support the following:
-| Key                       |                               Value                            | Type   | Required |       
-| ------------------------- | -------------------------------------------------------------- | ------ | -------- |  
+| Key                       |                               Value                            | Type   | Required |
+| ------------------------- | -------------------------------------------------------------- | ------ | -------- |
 | prefix | Object keyname prefix that identifies subset of objects to which the rule applies | string | No       |
 | tags   | A map of tags that identifies subset of objects to which the rule applies. The rule applies only to objects having all the tags in its tagset | map(string) | No |
 
 ### The **object_lock_configuration** object support the following:
-| Key                 |                               Value                            | Type   | Default | Required |       
-| ------------------- | -------------------------------------------------------------- | ------ | ------- | -------- | 
+| Key                 |                               Value                            | Type   | Default | Required |
+| ------------------- | -------------------------------------------------------------- | ------ | ------- | -------- |
 | object_lock_enabled | Boolean to enable [object locking](https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lock-overview.html) | bool | false | Yes |
 | default_mode        | The default Object Lock retention mode you want to apply to new objects placed in this bucket. Valid values are `GOVERNANCE` and `COMPLIANCE` | string | None | No |
 | default_days        | The number of days that you want to specify for the default retention period  | number | None | No |

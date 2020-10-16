@@ -3,6 +3,7 @@
 Full examples can be found in the corresponding TF files
 
 ### Basic:
+
 ```sh
 module "basic" {
     source = "coresolutions-ltd/s3-bucket/aws"
@@ -10,6 +11,7 @@ module "basic" {
 ```
 
 ### Replication:
+
 ```sh
 module "replication_example" {
   source     = "coresolutions-ltd/s3-bucket/aws"
@@ -32,6 +34,7 @@ module "destination_bucket" {
 ```
 
 ### Lifecycle Rules:
+
 ```sh
 module "lifecycle_rules_example" {
   source      = "coresolutions-ltd/s3-bucket/aws"
@@ -52,6 +55,7 @@ module "lifecycle_rules_example" {
 ```
 
 ### Object Locking:
+
 ```sh
 module "object_lock_example" {
   source      = "coresolutions-ltd/s3-bucket/aws"
@@ -63,6 +67,7 @@ module "object_lock_example" {
 ```
 
 ### Website Configuration:
+
 ```sh
 module "website_example" {
     source      = "coresolutions-ltd/s3-bucket/aws"
@@ -73,6 +78,7 @@ module "website_example" {
 ```
 
 ### CORS Rules:
+
 ```sh
 module "cors_rules_example" {
   source      = "coresolutions-ltd/s3-bucket/aws"
@@ -93,6 +99,7 @@ module "cors_rules_example" {
 ```
 
 ### Custom KMS Key:
+
 ```sh
 resource "aws_kms_key" "mykey" {
   description             = "This key is used to encrypt bucket objects"
@@ -100,7 +107,7 @@ resource "aws_kms_key" "mykey" {
 
 module "custom_kms_key_example" {
     source      = "coresolutions-ltd/s3-bucket/aws"
-    
+
     bucket_name = "custom-kms-bucket"
     encryption  = true
     kms_key     = aws_kms_key.mykey.arn
